@@ -1,0 +1,8 @@
+20-Oct 20:45:19  Start: band ±10, ask < 0.1, target 5x, window last 60 min, qty 1
+20-Oct 20:45:23  Aaj ki expiry: 20-Oct 21:30:00 IST. Uske settle hone tak chalunga.
+20-Oct 21:01:23  MISS C-XAUT-4140-201026: last 0.05 < 0.1 lekin ask 0.11 (backtest yahan buy kar leta)
+20-Oct 21:01:45  BUY  C-XAUT-4140-201026 @ 0.09 (ask size 19567)  spot 4130.77  28 min left
+20-Oct 21:04:08  BUY  P-XAUT-4120-201026 @ 0.03 (ask size 1468)  spot 4129.80  26 min left
+20-Oct 21:28:13  MISS P-XAUT-4130-201026: last 0.06 < 0.1 lekin ask 0.1 (backtest yahan buy kar leta)
+20-Oct 21:30:04  EXIT EXPIRY C-XAUT-4140-201026  entry 0.09 -> 0.00  P&L -0.095
+20-Oct 21:30:04  EXIT EXPIRY P-XAUT-4120-201026  entry 0.03 -> 0.00  P&L -0.035
