@@ -1,0 +1,84 @@
+<!doctype html><html lang="hi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gold Paper Trader</title>
+<style>
+:root{--bg:#0f1115;--card:#171a21;--line:#262b36;--fg:#e6e8ee;--mute:#8a93a6;--gold:#e0b44c;--up:#3fbf7f;--dn:#e5636b;--blue:#6aa8ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line)}
+h1{font-size:17px;margin:0;color:var(--gold);letter-spacing:.3px}
+.pill{font-size:12px;padding:3px 9px;border-radius:99px;border:1px solid var(--line);color:var(--mute)}
+.pill.on{color:#111;background:var(--up);border-color:var(--up)}.pill.err{color:#fff;background:var(--dn);border-color:var(--dn)}
+main{padding:16px 18px;display:grid;gap:14px;max-width:1300px;margin:0 auto}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.k{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.k b{display:block;font-size:20px;font-variant-numeric:tabular-nums;margin-top:2px}.k span{color:var(--mute);font-size:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto}
+.card h2{font-size:13px;margin:0 0 8px;color:var(--mute);font-weight:600;text-transform:uppercase;letter-spacing:.6px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:13px}
+th,td{padding:5px 8px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--mute);font-weight:500}td:first-child,th:first-child{text-align:left}
+tr.band td{background:rgba(224,180,76,.06)}.up{color:var(--up)}.dn{color:var(--dn)}.mute{color:var(--mute)}
+.tag{font-size:11px;padding:1px 7px;border-radius:99px;background:var(--line)}
+.tag.OPEN,.tag.BOUGHT{background:var(--blue);color:#0b1020}.tag.watch{background:#3a3220;color:var(--gold)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:900px){.grid2{grid-template-columns:1fr}}
+pre{margin:0;font:12px/1.5 ui-monospace,Consolas,monospace;color:var(--mute);white-space:pre-wrap;max-height:260px;overflow:auto}
+.note{color:var(--mute);font-size:12px}
+</style></head><body>
+<header><h1>GOLD (XAUT) Options · Paper Trader</h1>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><span id="win" class="pill">—</span><span id="upd" class="pill">connecting…</span></div></header>
+<main>
+<div class="kpis">
+<div class="k"><span>Gold spot</span><b id="spot">—</b></div>
+<div class="k"><span>Next expiry (IST)</span><b id="exp" style="font-size:15px">—</b></div>
+<div class="k"><span>Expiry me baaki</span><b id="left">—</b></div>
+<div class="k"><span>Realised P&amp;L</span><b id="pnl">—</b></div>
+<div class="k"><span>Open P&amp;L (bid pe)</span><b id="unr">—</b></div>
+<div class="k"><span>Trades / wins</span><b id="tw">—</b></div>
+<div class="k"><span>Missed (sasta last, mehnga ask)</span><b id="miss">—</b></div>
+</div>
+<div class="card"><h2>Option chain (aaj ki expiry)</h2><div id="chain" class="note">data aa raha hai…</div>
+<p class="note" id="rules"></p></div>
+<div class="grid2">
+<div class="card"><h2>Open positions</h2><div id="open" class="note">koi nahi</div></div>
+<div class="card"><h2>Log</h2><pre id="log"></pre></div>
+</div>
+<div class="card"><h2>Closed trades</h2><div id="closed" class="note">abhi koi nahi</div></div>
+</main>
+<script>
+const f=(x,d=2)=>x==null||x===''||isNaN(x)?'—':Number(x).toFixed(d);
+const cls=v=>v>0?'up':v<0?'dn':'';
+function table(rows,cols){if(!rows.length)return null;
+ return '<table><tr>'+cols.map(c=>'<th>'+c[0]+'</th>').join('')+'</tr>'+rows.map(r=>'<tr class="'+(r._cls||'')+'">'+cols.map(c=>'<td>'+c[1](r)+'</td>').join('')+'</tr>').join('')+'</table>'}
+async function tick(){
+ try{const s=await (await fetch('state.json?t='+Date.now())).json();
+  document.getElementById('spot').textContent=f(s.spot);
+  document.getElementById('exp').textContent=s.next_expiry||'—';
+  let m=s.mins_left;if(s.next_expiry_iso){m=(new Date(s.next_expiry_iso)-Date.now())/60000;if(m<0)m=0}
+  const age=s.updated_iso?(Date.now()-new Date(s.updated_iso))/60000:null;
+  if(age!=null&&age>5){s.error=(s.error?s.error+' | ':'')+'data '+Math.round(age)+' min purana (app abhi nahi chal rahi)'}
+  document.getElementById('left').textContent=m==null?'—':(m>=60?Math.floor(m/60)+'h '+Math.floor(m%60)+'m':Math.floor(m)+'m '+Math.floor((m*60)%60)+'s');
+  s.in_window=m!=null&&m>=s.window[0]&&m<=s.window[1]&&!(age>5);
+  const w=document.getElementById('win');w.textContent=s.in_window?'ENTRY WINDOW ON':'entry window: last '+s.window[1]+' min';w.className='pill'+(s.in_window?' on':'');
+  const u=document.getElementById('upd');u.textContent=s.error?s.error.slice(0,90):'updated '+(s.last_update||'—');u.className='pill'+(s.error?' err':'');
+  const st=s.stats;
+  const p=document.getElementById('pnl');p.textContent='$'+f(st.pnl,3);p.className=cls(st.pnl);
+  const un=document.getElementById('unr');un.textContent='$'+f(st.unreal,3);un.className=cls(st.unreal);
+  document.getElementById('tw').textContent=st.trades+' / '+st.wins;
+  document.getElementById('miss').textContent=st.missed;
+  const c=s.cfg;document.getElementById('rules').textContent=`Rules: strike spot se ±$${c.band} · best ask < $${c.entry_max} · target ${c.target_x}x (bid pe) · qty ${c.qty} · fee $${c.fee}/side · extra slip $${c.slip}. Highlighted rows = band ke andar.`;
+  const ch=s.chain.map(r=>({...r,_cls:r.in_band?'band':''}));
+  document.getElementById('chain').innerHTML=table(ch,[
+   ['Symbol',r=>r.symbol],['Type',r=>r.kind==='C'?'CE':'PE'],['Strike',r=>f(r.strike,0)],['vs spot',r=>f(r.dist,1)],
+   ['Bid',r=>f(r.bid)],['Ask',r=>f(r.ask)],['Ask size',r=>f(r.ask_size,0)],['Last',r=>f(r.last)],['Mark',r=>f(r.mark,3)],
+   ['',r=>r.status?'<span class="tag '+r.status+'">'+r.status+'</span>':'']])||'aaj ki expiry ke liye koi gold option nahi mila';
+  document.getElementById('open').innerHTML=table(s.open,[
+   ['Symbol',r=>r.symbol],['Entry',r=>f(r.entry_px)],['Bid now',r=>f(r.bid_now)],['Target',r=>f(r.entry_px*c.target_x)],
+   ['Open P&L',r=>'<span class="'+cls(r.unreal)+'">'+f(r.unreal,3)+'</span>'],['Entry time',r=>r.entry_time]])||'koi nahi';
+  document.getElementById('closed').innerHTML=table(s.closed,[
+   ['Symbol',r=>r.symbol],['Entry time',r=>r.entry_time],['Entry',r=>f(r.entry_px)],['Exit',r=>f(r.exit_px)],
+   ['Reason',r=>r.exit_reason],['Min left',r=>f(r.mins_left_at_entry,0)],['P&L',r=>'<span class="'+cls(+r.pnl)+'">'+f(r.pnl,3)+'</span>']])||'abhi koi nahi';
+  document.getElementById('log').textContent=s.log.join('\n');
+ }catch(e){const u=document.getElementById('upd');u.textContent='app band hai?';u.className='pill err'}
+}
+tick();setInterval(tick,location.port?3000:20000);  // GitHub Pages pe har 20 sec
+</script></body></html>
