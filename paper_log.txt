@@ -13,3 +13,5 @@
 21-Oct 21:00:52  BUY  P-XAUT-4130-211026 @ 0.08 (ask size 22000)  spot 4138.64  29 min left
 21-Oct 21:04:36  MISS C-XAUT-4140-211026: last 0.05 < 0.1 lekin ask 0.5 (backtest yahan buy kar leta)
 21-Oct 21:14:46  BUY  C-XAUT-4140-211026 @ 0.04 (ask size 119450)  spot 4130.96  15 min left
+21-Oct 21:30:03  EXIT EXPIRY P-XAUT-4130-211026  entry 0.08 -> 0.00  P&L -0.085
+21-Oct 21:30:03  EXIT EXPIRY C-XAUT-4140-211026  entry 0.04 -> 0.00  P&L -0.045
