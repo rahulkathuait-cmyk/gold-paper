@@ -9,3 +9,4 @@
 20-Oct 21:32:04  Expiry settle ho gayi, aaj ka run khatam.
 21-Oct 20:11:51  Start: band ±10, ask < 0.1, target 5x, window last 60 min, qty 1
 21-Oct 20:11:54  Aaj ki expiry: 21-Oct 21:30:00 IST. Uske settle hone tak chalunga.
+21-Oct 20:59:47  MISS C-XAUT-4150-211026: last 0.09 < 0.1 lekin ask 0.1 (backtest yahan buy kar leta)
