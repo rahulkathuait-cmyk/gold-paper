@@ -15,3 +15,4 @@
 21-Oct 21:14:46  BUY  C-XAUT-4140-211026 @ 0.04 (ask size 119450)  spot 4130.96  15 min left
 21-Oct 21:30:03  EXIT EXPIRY P-XAUT-4130-211026  entry 0.08 -> 0.00  P&L -0.085
 21-Oct 21:30:03  EXIT EXPIRY C-XAUT-4140-211026  entry 0.04 -> 0.00  P&L -0.045
+21-Oct 21:32:05  Expiry settle ho gayi, aaj ka run khatam.
