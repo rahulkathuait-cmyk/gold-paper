@@ -12,3 +12,4 @@
 21-Oct 20:59:47  MISS C-XAUT-4150-211026: last 0.09 < 0.1 lekin ask 0.1 (backtest yahan buy kar leta)
 21-Oct 21:00:52  BUY  P-XAUT-4130-211026 @ 0.08 (ask size 22000)  spot 4138.64  29 min left
 21-Oct 21:04:36  MISS C-XAUT-4140-211026: last 0.05 < 0.1 lekin ask 0.5 (backtest yahan buy kar leta)
+21-Oct 21:14:46  BUY  C-XAUT-4140-211026 @ 0.04 (ask size 119450)  spot 4130.96  15 min left
