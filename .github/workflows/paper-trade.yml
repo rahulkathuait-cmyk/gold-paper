@@ -2,7 +2,8 @@ name: Gold paper trade
 
 on:
   schedule:
-    - cron: "15 14 * * *"
+    # 11:30 UTC = 17:00 IST. Entry 18:00 IST se (expiry 21:30 se 210 min pehle).
+    - cron: "30 11 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -15,7 +16,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 200
+    timeout-minutes: 340
     steps:
       - uses: actions/checkout@v4
 
@@ -42,7 +43,7 @@ jobs:
             fi
           }
 
-          python gold_paper_trader.py --headless --export docs/state.json --export-every 30 &
+          python gold_paper_trader.py --headless --export docs/state.json --export-every 30 --max-mins-left 210 --max-runtime 320 &
           PID=$!
           while kill -0 $PID 2>/dev/null; do
             sleep 120
