@@ -19,3 +19,5 @@
 22-Oct 17:29:42  Start: band ±10, ask < 0.1, target 5x, window last 210 min, qty 1
 22-Oct 17:29:46  Aaj ki expiry: 22-Oct 21:30:00 IST. Uske settle hone tak chalunga.
 22-Oct 21:20:55  MISS P-XAUT-4050-221026: last 0.06 < 0.1 lekin ask 0.1 (backtest yahan buy kar leta)
+22-Oct 21:21:28  MISS C-XAUT-4060-221026: last 0.03 < 0.1 lekin ask 0.3 (backtest yahan buy kar leta)
+22-Oct 21:22:25  BUY  C-XAUT-4060-221026 @ 0.03 (ask size 6077)  spot 4055.28  8 min left
