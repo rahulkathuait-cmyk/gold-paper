@@ -16,3 +16,5 @@
 21-Oct 21:30:03  EXIT EXPIRY P-XAUT-4130-211026  entry 0.08 -> 0.00  P&L -0.085
 21-Oct 21:30:03  EXIT EXPIRY C-XAUT-4140-211026  entry 0.04 -> 0.00  P&L -0.045
 21-Oct 21:32:05  Expiry settle ho gayi, aaj ka run khatam.
+22-Oct 17:29:42  Start: band ±10, ask < 0.1, target 5x, window last 210 min, qty 1
+22-Oct 17:29:46  Aaj ki expiry: 22-Oct 21:30:00 IST. Uske settle hone tak chalunga.
