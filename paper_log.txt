@@ -24,3 +24,4 @@
 22-Oct 21:27:55  BUY  P-XAUT-4050-221026 @ 0.05 (ask size 173842)  spot 4056.20  2 min left
 22-Oct 21:30:00  EXIT EXPIRY C-XAUT-4060-221026  entry 0.03 -> 0.00  P&L -0.035
 22-Oct 21:30:00  EXIT EXPIRY P-XAUT-4050-221026  entry 0.05 -> 0.00  P&L -0.055
+22-Oct 21:32:03  Expiry settle ho gayi, aaj ka run khatam.
