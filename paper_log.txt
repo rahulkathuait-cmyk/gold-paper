@@ -27,3 +27,4 @@
 22-Oct 21:32:03  Expiry settle ho gayi, aaj ka run khatam.
 23-Oct 17:28:23  Start: band ±10, ask < 0.1, target 5x, window last 210 min, qty 1
 23-Oct 17:28:27  Aaj ki expiry: 23-Oct 21:30:00 IST. Uske settle hone tak chalunga.
+23-Oct 21:04:18  BUY  C-XAUT-4010-231026 @ 0.08 (ask size 20000)  spot 4001.02  26 min left
