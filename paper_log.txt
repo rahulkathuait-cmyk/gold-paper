@@ -29,3 +29,4 @@
 23-Oct 17:28:27  Aaj ki expiry: 23-Oct 21:30:00 IST. Uske settle hone tak chalunga.
 23-Oct 21:04:18  BUY  C-XAUT-4010-231026 @ 0.08 (ask size 20000)  spot 4001.02  26 min left
 23-Oct 21:07:15  BUY  P-XAUT-3990-231026 @ 0.04 (ask size 17034)  spot 3999.08  23 min left
+23-Oct 21:23:31  BUY  P-XAUT-4000-231026 @ 0.09 (ask size 680)  spot 4006.84  6 min left
