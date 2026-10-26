@@ -47,3 +47,5 @@
 25-Oct 17:23:37  Start: band ±10, ask < 0.11, target 5x, window last 210 min, qty 1
 25-Oct 17:23:39  Aaj ki expiry: 26-Oct 21:30:00 IST. Uske settle hone tak chalunga.
 25-Oct 22:43:39  max runtime pura, band kar raha hoon.
+26-Oct 19:18:44  Start: band ±10, ask < 0.11, target 5x, window last 210 min, qty 1
+26-Oct 19:18:46  Aaj ki expiry: 26-Oct 21:30:00 IST. Uske settle hone tak chalunga.
