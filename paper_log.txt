@@ -72,3 +72,4 @@
 28-Oct 17:39:16  Aaj ki expiry: 28-Oct 21:30:00 IST. Uske settle hone tak chalunga.
 28-Oct 20:56:06  MISS C-XAUT-4050-281026: last 0.09 < 0.11 lekin ask 0.27 (backtest yahan buy kar leta)
 28-Oct 20:59:58  BUY  C-XAUT-4050-281026 @ 0.10 (ask size 24000)  spot 4042.01  30 min left
+28-Oct 21:01:38  BUY  P-XAUT-4030-281026 @ 0.03 (ask size 9920)  spot 4039.82  28 min left
