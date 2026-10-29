@@ -86,3 +86,6 @@
 29-Oct 21:12:32  MISS P-XAUT-4020-291026: last 0.1 < 0.11 lekin ask 0.2 (backtest yahan buy kar leta)
 29-Oct 21:16:00  BUY  P-XAUT-4010-291026 @ 0.03 (ask size 5418)  spot 4019.36  14 min left
 29-Oct 21:21:19  BUY  P-XAUT-4020-291026 @ 0.10 (ask size 107346)  spot 4020.84  9 min left
+29-Oct 21:30:02  EXIT EXPIRY C-XAUT-4030-291026  entry 0.07 -> 0.00  P&L -0.075
+29-Oct 21:30:02  EXIT EXPIRY P-XAUT-4010-291026  entry 0.03 -> 0.00  P&L -0.035
+29-Oct 21:30:02  EXIT EXPIRY P-XAUT-4020-291026  entry 0.10 -> 0.00  P&L -0.105
