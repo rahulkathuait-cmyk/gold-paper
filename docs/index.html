@@ -34,7 +34,7 @@ pre{margin:0;font:12px/1.5 ui-monospace,Consolas,monospace;color:var(--mute);whi
 <div class="k"><span>Realised P&amp;L</span><b id="pnl">—</b></div>
 <div class="k"><span>Open P&amp;L (bid pe)</span><b id="unr">—</b></div>
 <div class="k"><span>Trades / wins</span><b id="tw">—</b></div>
-<div class="k"><span>Missed (sasta last, mehnga ask)</span><b id="miss">—</b></div>
+<div class="k"><span>Missed total (sasta last, mehnga ask)</span><b id="miss">—</b></div>
 </div>
 <div class="card"><h2>Option chain (aaj ki expiry)</h2><div id="chain" class="note">data aa raha hai…</div>
 <p class="note" id="rules"></p></div>
@@ -65,7 +65,7 @@ async function tick(){
   const un=document.getElementById('unr');un.textContent='$'+f(st.unreal,3);un.className=cls(st.unreal);
   document.getElementById('tw').textContent=st.trades+' / '+st.wins;
   document.getElementById('miss').textContent=st.missed;
-  const c=s.cfg;document.getElementById('rules').textContent=`Rules: strike spot se ±$${c.band} · best ask < $${c.entry_max} · target ${c.target_x}x (bid pe) · qty ${c.qty} · fee $${c.fee}/side · extra slip $${c.slip}. Highlighted rows = band ke andar.`;
+  const c=s.cfg;document.getElementById('rules').textContent=`Rules: strike spot se ±$${c.band} · best ask $${c.entry_min ?? 0}–$${c.entry_max} · target ${c.target_x}x (bid pe) · qty ${c.qty} · fee $${c.fee}/side · extra slip $${c.slip}. Highlighted rows = band ke andar.`;
   const ch=s.chain.map(r=>({...r,_cls:r.in_band?'band':''}));
   document.getElementById('chain').innerHTML=table(ch,[
    ['Symbol',r=>r.symbol],['Type',r=>r.kind==='C'?'CE':'PE'],['Strike',r=>f(r.strike,0)],['vs spot',r=>f(r.dist,1)],
