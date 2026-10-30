@@ -6,7 +6,7 @@ Backtest se nikli strategy ko live market pe paper (nakli paise) me chalata hai:
   - Sirf aaj expire hone wale gold options.
   - Entry window: expiry se MAX_MINS_LEFT (default 60) minute pehle se.
   - Strike spot se +/- BAND (default $10) ke andar, CE aur PE dono.
-  - Agar BEST ASK < ENTRY_MAX ($0.10) aur ask pe quantity ho -> paper BUY at ask.
+  - Agar BEST ASK ENTRY_MIN aur ENTRY_MAX ke beech ho (dono shaamil) aur ask pe quantity ho -> paper BUY at ask.
     (har contract me ek hi entry)
   - Exit: BEST BID >= TARGET_X x entry -> paper SELL at bid.
     Warna expiry pe settle (OTM = 0, ITM = intrinsic, last spot se).
@@ -212,6 +212,7 @@ class Engine:
                 self.open = st.get("open", {})
                 self.traded = set(st.get("traded", []))
                 self.spot_by_expiry = st.get("spot_by_expiry", {})
+                self.missed = st.get("missed", {})
             except Exception as e:
                 log(f"state load fail: {e}")
         if os.path.exists(TRADES_FILE):
@@ -224,7 +225,7 @@ class Engine:
         tmp = STATE_FILE + ".tmp"
         with open(tmp, "w") as f:
             json.dump({"open": self.open, "traded": sorted(self.traded),
-                       "spot_by_expiry": self.spot_by_expiry}, f, indent=1)
+                       "spot_by_expiry": self.spot_by_expiry, "missed": self.missed}, f, indent=1)
         os.replace(tmp, STATE_FILE)
 
     def record_close(self, pos, exit_time, exit_px, reason):
@@ -292,7 +293,8 @@ class Engine:
                         continue
                     status = ""
                     in_band = dist <= c.band
-                    ask_ok = o["ask"] is not None and 0 < o["ask"] < c.entry_max and o["ask_size"] > 0
+                    ask_ok = (o["ask"] is not None and c.entry_min <= o["ask"] <= c.entry_max
+                              and o["ask"] > 0 and o["ask_size"] > 0)
                     if o["symbol"] in self.open:
                         status = "OPEN"
                     elif o["symbol"] in self.traded:
@@ -311,10 +313,10 @@ class Engine:
                         log(f"BUY  {o['symbol']} @ {px:.2f} (ask size {o['ask_size']:g})  "
                             f"spot {spot:.2f}  {mins_left:.0f} min left", alert=True)
                     elif in_band and in_window:
-                        cheap_last = o["last"] is not None and 0 < o["last"] < c.entry_max
+                        cheap_last = o["last"] is not None and c.entry_min <= o["last"] <= c.entry_max and o["last"] > 0
                         if cheap_last and o["symbol"] not in self.missed:
                             self.missed[o["symbol"]] = {"time": ist(t), "last": o["last"], "ask": o["ask"]}
-                            log(f"MISS {o['symbol']}: last {o['last']} < {c.entry_max} lekin ask "
+                            log(f"MISS {o['symbol']}: last {o['last']} range me tha lekin ask "
                                 f"{o['ask'] if o['ask'] else 'nahi'} (backtest yahan buy kar leta)")
                         status = "watch"
                     chain.append({**o, "expiry": None, "dist": round(o["strike"] - spot, 2),
@@ -348,7 +350,7 @@ class Engine:
                 "mins_left": mins_left,
                 "window": [c.min_mins_left, c.max_mins_left],
                 "in_window": mins_left is not None and c.min_mins_left <= mins_left <= c.max_mins_left,
-                "cfg": {"band": c.band, "entry_max": c.entry_max, "target_x": c.target_x,
+                "cfg": {"band": c.band, "entry_min": c.entry_min, "entry_max": c.entry_max, "target_x": c.target_x,
                         "qty": c.qty, "fee": c.fee_per_side, "slip": c.extra_slippage},
                 "chain": self.chain, "open": open_rows, "closed": closed[-100:][::-1],
                 "stats": {"trades": len(closed), "wins": wins, "pnl": round(pnl, 4),
@@ -456,7 +458,7 @@ pre{margin:0;font:12px/1.5 ui-monospace,Consolas,monospace;color:var(--mute);whi
 <div class="k"><span>Realised P&amp;L</span><b id="pnl">—</b></div>
 <div class="k"><span>Open P&amp;L (bid pe)</span><b id="unr">—</b></div>
 <div class="k"><span>Trades / wins</span><b id="tw">—</b></div>
-<div class="k"><span>Missed (sasta last, mehnga ask)</span><b id="miss">—</b></div>
+<div class="k"><span>Missed total (sasta last, mehnga ask)</span><b id="miss">—</b></div>
 </div>
 <div class="card"><h2>Option chain (aaj ki expiry)</h2><div id="chain" class="note">data aa raha hai…</div>
 <p class="note" id="rules"></p></div>
@@ -487,7 +489,7 @@ async function tick(){
   const un=document.getElementById('unr');un.textContent='$'+f(st.unreal,3);un.className=cls(st.unreal);
   document.getElementById('tw').textContent=st.trades+' / '+st.wins;
   document.getElementById('miss').textContent=st.missed;
-  const c=s.cfg;document.getElementById('rules').textContent=`Rules: strike spot se ±$${c.band} · best ask < $${c.entry_max} · target ${c.target_x}x (bid pe) · qty ${c.qty} · fee $${c.fee}/side · extra slip $${c.slip}. Highlighted rows = band ke andar.`;
+  const c=s.cfg;document.getElementById('rules').textContent=`Rules: strike spot se ±$${c.band} · best ask $${c.entry_min ?? 0}–$${c.entry_max} · target ${c.target_x}x (bid pe) · qty ${c.qty} · fee $${c.fee}/side · extra slip $${c.slip}. Highlighted rows = band ke andar.`;
   const ch=s.chain.map(r=>({...r,_cls:r.in_band?'band':''}));
   document.getElementById('chain').innerHTML=table(ch,[
    ['Symbol',r=>r.symbol],['Type',r=>r.kind==='C'?'CE':'PE'],['Strike',r=>f(r.strike,0)],['vs spot',r=>f(r.dist,1)],
@@ -550,7 +552,8 @@ def make_handler(engine, password=None):
 def main():
     p = argparse.ArgumentParser(description="Gold options live paper trader (Delta India)")
     p.add_argument("--band", type=float, default=10, help="strike spot se +/- $ (default 10)")
-    p.add_argument("--entry-max", type=float, default=0.10, help="best ask is se kam ho to buy")
+    p.add_argument("--entry-min", type=float, default=0.0, help="best ask kam se kam itna ho (inclusive)")
+    p.add_argument("--entry-max", type=float, default=0.10, help="best ask zyada se zyada itna ho (inclusive)")
     p.add_argument("--target-x", type=float, default=5, help="bid >= entry x yeh -> sell")
     p.add_argument("--min-mins-left", type=float, default=0)
     p.add_argument("--max-mins-left", type=float, default=60, help="expiry se itne minute pehle se entry")
@@ -588,7 +591,7 @@ def main():
     TG["token"], TG["chat"] = cfg.tg_token, cfg.tg_chat
     h, m = (int(x) for x in cfg.expiry_utc.split(":"))
     engine, market = Engine(cfg), Market(h, m)
-    log(f"Start: band ±{cfg.band}, ask < {cfg.entry_max}, target {cfg.target_x}x, "
+    log(f"Start: band ±{cfg.band}, ask {cfg.entry_min}–{cfg.entry_max}, target {cfg.target_x}x, "
         f"window last {cfg.max_mins_left:g} min, qty {cfg.qty:g}")
     if cfg.headless:
         if TG["token"] and TG["chat"]:
