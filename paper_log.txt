@@ -94,3 +94,4 @@
 30-Oct 13:12:41  Aaj ki expiry: 30-Oct 21:30:00 IST. Uske settle hone tak chalunga.
 30-Oct 13:30:03  MISS C-XAUT-4050-301026: last 0.12 range me tha lekin ask 0.25 (backtest yahan buy kar leta)
 30-Oct 13:50:56  MISS C-XAUT-4060-301026: last 0.11 range me tha lekin ask 0.19 (backtest yahan buy kar leta)
+30-Oct 14:18:43  BUY  C-XAUT-4060-301026 @ 0.11 (ask size 6637)  spot 3995.47  431 min left
