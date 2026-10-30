@@ -2,8 +2,10 @@ name: Gold paper trade
 
 on:
   schedule:
-    # 11:30 UTC = 17:00 IST. Entry 18:00 IST se (expiry 21:30 se 210 min pehle).
-    - cron: "30 11 * * *"
+    # Run 1: 06:45 UTC = 12:15 IST (entry 13:30 IST se). Max 5.5 ghante chalta hai.
+    - cron: "45 6 * * *"
+    # Run 2: 12:15 UTC = 17:45 IST. Run 1 khatam hote hi shuru hoke expiry (21:30 IST) tak chalta hai.
+    - cron: "15 12 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -16,9 +18,11 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 340
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-python@v5
         with:
@@ -26,13 +30,14 @@ jobs:
 
       - run: pip install requests
 
-      - name: Paper trade (aaj ki expiry tak)
+      - name: Paper trade
         env:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT: ${{ secrets.TG_CHAT }}
         run: |
           git config user.name  "gold-paper-bot"
           git config user.email "gold-paper-bot@users.noreply.github.com"
+          git pull -q --rebase origin main || true
 
           save() {
             git add docs/state.json paper_state.json paper_trades.csv paper_log.txt 2>/dev/null || true
@@ -43,7 +48,7 @@ jobs:
             fi
           }
 
-          python gold_paper_trader.py --headless --export docs/state.json --export-every 30 --max-mins-left 210 --max-runtime 320 ---entry-min 0.05 --entry-max 0.15 &
+          python gold_paper_trader.py --headless --export docs/state.json --export-every 30 --max-mins-left 480 --max-runtime 330 --band 80 --entry-min 0.05 --entry-max 0.15 &
           PID=$!
           while kill -0 $PID 2>/dev/null; do
             sleep 120
