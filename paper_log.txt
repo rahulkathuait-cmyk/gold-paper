@@ -120,3 +120,4 @@
 30-Oct 19:20:33  MISS C-XAUT-3960-301026: last 0.11 range me tha lekin ask 0.4 (backtest yahan buy kar leta)
 30-Oct 19:21:25  BUY  C-XAUT-3970-301026 @ 0.12 (ask size 22767)  spot 3918.46  129 min left
 30-Oct 19:23:11  EXIT TARGET P-XAUT-3880-301026  entry 0.09 -> 0.49  P&L +0.390
+30-Oct 19:32:03  BUY  C-XAUT-3960-301026 @ 0.13 (ask size 53574)  spot 3916.19  118 min left
