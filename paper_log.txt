@@ -108,3 +108,4 @@
 30-Oct 18:32:50  MISS C-XAUT-4000-301026: last 0.13 range me tha lekin ask 0.29 (backtest yahan buy kar leta)
 30-Oct 18:34:32  BUY  C-XAUT-4010-301026 @ 0.15 (ask size 7800)  spot 3946.18  175 min left
 30-Oct 18:37:28  BUY  C-XAUT-4000-301026 @ 0.10 (ask size 9466)  spot 3941.89  173 min left
+30-Oct 18:42:38  max runtime pura, band kar raha hoon.
