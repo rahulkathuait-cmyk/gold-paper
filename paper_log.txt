@@ -112,3 +112,4 @@
 30-Oct 18:44:15  7 open paper positions wapas load ki
 30-Oct 18:44:15  Start: band ±80.0, ask 0.05–0.15, target 5x, window last 480 min, qty 1
 30-Oct 18:44:17  Aaj ki expiry: 30-Oct 21:30:00 IST. Uske settle hone tak chalunga.
+30-Oct 18:47:55  MISS C-XAUT-3990-301026: last 0.15 range me tha lekin ask 0.21 (backtest yahan buy kar leta)
