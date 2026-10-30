@@ -105,3 +105,4 @@
 30-Oct 18:12:04  BUY  P-XAUT-3880-301026 @ 0.09 (ask size 13936)  spot 3959.42  198 min left
 30-Oct 18:21:32  BUY  C-XAUT-4020-301026 @ 0.13 (ask size 969)  spot 3955.89  188 min left
 30-Oct 18:25:34  MISS C-XAUT-4010-301026: last 0.05 range me tha lekin ask 0.3 (backtest yahan buy kar leta)
+30-Oct 18:32:50  MISS C-XAUT-4000-301026: last 0.13 range me tha lekin ask 0.29 (backtest yahan buy kar leta)
