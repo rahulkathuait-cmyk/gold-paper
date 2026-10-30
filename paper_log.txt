@@ -90,3 +90,5 @@
 29-Oct 21:30:02  EXIT EXPIRY P-XAUT-4010-291026  entry 0.03 -> 0.00  P&L -0.035
 29-Oct 21:30:02  EXIT EXPIRY P-XAUT-4020-291026  entry 0.10 -> 0.00  P&L -0.105
 29-Oct 21:32:02  Expiry settle ho gayi, aaj ka run khatam.
+30-Oct 13:12:35  Start: band ±80.0, ask 0.05–0.15, target 5x, window last 480 min, qty 1
+30-Oct 13:12:41  Aaj ki expiry: 30-Oct 21:30:00 IST. Uske settle hone tak chalunga.
