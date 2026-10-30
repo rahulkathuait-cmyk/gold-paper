@@ -109,3 +109,6 @@
 30-Oct 18:34:32  BUY  C-XAUT-4010-301026 @ 0.15 (ask size 7800)  spot 3946.18  175 min left
 30-Oct 18:37:28  BUY  C-XAUT-4000-301026 @ 0.10 (ask size 9466)  spot 3941.89  173 min left
 30-Oct 18:42:38  max runtime pura, band kar raha hoon.
+30-Oct 18:44:15  7 open paper positions wapas load ki
+30-Oct 18:44:15  Start: band ±80.0, ask 0.05–0.15, target 5x, window last 480 min, qty 1
+30-Oct 18:44:17  Aaj ki expiry: 30-Oct 21:30:00 IST. Uske settle hone tak chalunga.
