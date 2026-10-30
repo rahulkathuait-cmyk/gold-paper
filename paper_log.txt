@@ -156,3 +156,4 @@
 30-Oct 21:30:04  EXIT EXPIRY C-XAUT-3920-301026  entry 0.15 -> 0.00  P&L -0.155
 30-Oct 21:30:04  EXIT EXPIRY P-XAUT-3900-301026  entry 0.15 -> 0.00  P&L -0.155
 30-Oct 21:30:04  EXIT EXPIRY C-XAUT-3910-301026  entry 0.10 -> 0.00  P&L -0.105
+30-Oct 21:32:05  Expiry settle ho gayi, aaj ka run khatam.
