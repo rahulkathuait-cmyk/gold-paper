@@ -93,3 +93,4 @@
 30-Oct 13:12:35  Start: band ±80.0, ask 0.05–0.15, target 5x, window last 480 min, qty 1
 30-Oct 13:12:41  Aaj ki expiry: 30-Oct 21:30:00 IST. Uske settle hone tak chalunga.
 30-Oct 13:30:03  MISS C-XAUT-4050-301026: last 0.12 range me tha lekin ask 0.25 (backtest yahan buy kar leta)
+30-Oct 13:50:56  MISS C-XAUT-4060-301026: last 0.11 range me tha lekin ask 0.19 (backtest yahan buy kar leta)
