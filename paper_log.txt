@@ -129,3 +129,4 @@
 30-Oct 20:03:41  EXIT TARGET P-XAUT-3860-301026  entry 0.10 -> 0.51  P&L +0.400
 30-Oct 20:09:35  BUY  P-XAUT-3870-301026 @ 0.10 (ask size 69645)  spot 3914.38  80 min left
 30-Oct 20:09:40  EXIT TARGET P-XAUT-3870-301026  entry 0.10 -> 0.51  P&L +0.400
+30-Oct 20:10:31  MISS P-XAUT-3890-301026: last 0.15 range me tha lekin ask 0.5 (backtest yahan buy kar leta)
