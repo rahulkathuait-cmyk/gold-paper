@@ -48,7 +48,7 @@ jobs:
             fi
           }
 
-          python gold_paper_trader.py --headless --export docs/state.json --export-every 30 --max-mins-left 480 --max-runtime 330 --band 80 --entry-min 0.05 --entry-max 0.15 &
+          python gold_paper_trader.py --headless --export docs/state.json --export-every 30 --max-mins-left 480 --max-runtime 330 --band 80 --entry-min 0.05 --entry-max 0.15 --max-trades 2 &
           PID=$!
           while kill -0 $PID 2>/dev/null; do
             sleep 120
