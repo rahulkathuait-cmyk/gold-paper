@@ -284,6 +284,8 @@ class Engine:
             if spot and self.next_expiry:
                 exp = self.next_expiry
                 mins_left = (exp - t).total_seconds() / 60
+                day_tag = exp.strftime("%d%m%y")
+                taken_today = sum(1 for sym in self.traded if sym.endswith(day_tag))
                 in_window = c.min_mins_left <= mins_left <= c.max_mins_left
                 for o in opts:
                     if o["expiry"] != exp:
@@ -299,7 +301,7 @@ class Engine:
                         status = "OPEN"
                     elif o["symbol"] in self.traded:
                         status = "done"
-                    elif in_band and in_window and ask_ok:
+                    elif in_band and in_window and ask_ok and (c.max_trades <= 0 or taken_today < c.max_trades):
                         px = o["ask"] + c.extra_slippage
                         self.open[o["symbol"]] = {
                             "expiry": ist(exp), "expiry_iso": exp.isoformat(),
@@ -309,10 +311,11 @@ class Engine:
                             "mins_left_at_entry": round(mins_left, 1), "bid_now": o["bid"],
                         }
                         self.traded.add(o["symbol"])
+                        taken_today += 1
                         status = "BOUGHT"
                         log(f"BUY  {o['symbol']} @ {px:.2f} (ask size {o['ask_size']:g})  "
                             f"spot {spot:.2f}  {mins_left:.0f} min left", alert=True)
-                    elif in_band and in_window:
+                    elif in_band and in_window and (c.max_trades <= 0 or taken_today < c.max_trades):
                         cheap_last = o["last"] is not None and c.entry_min <= o["last"] <= c.entry_max and o["last"] > 0
                         if cheap_last and o["symbol"] not in self.missed:
                             self.missed[o["symbol"]] = {"time": ist(t), "last": o["last"], "ask": o["ask"]}
@@ -350,7 +353,7 @@ class Engine:
                 "mins_left": mins_left,
                 "window": [c.min_mins_left, c.max_mins_left],
                 "in_window": mins_left is not None and c.min_mins_left <= mins_left <= c.max_mins_left,
-                "cfg": {"band": c.band, "entry_min": c.entry_min, "entry_max": c.entry_max, "target_x": c.target_x,
+                "cfg": {"max_trades": c.max_trades, "band": c.band, "entry_min": c.entry_min, "entry_max": c.entry_max, "target_x": c.target_x,
                         "qty": c.qty, "fee": c.fee_per_side, "slip": c.extra_slippage},
                 "chain": self.chain, "open": open_rows, "closed": closed[-100:][::-1],
                 "stats": {"trades": len(closed), "wins": wins, "pnl": round(pnl, 4),
@@ -489,7 +492,7 @@ async function tick(){
   const un=document.getElementById('unr');un.textContent='$'+f(st.unreal,3);un.className=cls(st.unreal);
   document.getElementById('tw').textContent=st.trades+' / '+st.wins;
   document.getElementById('miss').textContent=st.missed;
-  const c=s.cfg;document.getElementById('rules').textContent=`Rules: strike spot se ±$${c.band} · best ask $${c.entry_min ?? 0}–$${c.entry_max} · target ${c.target_x}x (bid pe) · qty ${c.qty} · fee $${c.fee}/side · extra slip $${c.slip}. Highlighted rows = band ke andar.`;
+  const c=s.cfg;document.getElementById('rules').textContent=`Rules: strike spot se ±$${c.band} · best ask $${c.entry_min ?? 0}–$${c.entry_max} · din me max ${c.max_trades||'unlimited'} entry · target ${c.target_x}x (bid pe) · qty ${c.qty} · fee $${c.fee}/side · extra slip $${c.slip}. Highlighted rows = band ke andar.`;
   const ch=s.chain.map(r=>({...r,_cls:r.in_band?'band':''}));
   document.getElementById('chain').innerHTML=table(ch,[
    ['Symbol',r=>r.symbol],['Type',r=>r.kind==='C'?'CE':'PE'],['Strike',r=>f(r.strike,0)],['vs spot',r=>f(r.dist,1)],
@@ -558,6 +561,7 @@ def main():
     p.add_argument("--min-mins-left", type=float, default=0)
     p.add_argument("--max-mins-left", type=float, default=60, help="expiry se itne minute pehle se entry")
     p.add_argument("--qty", type=float, default=1, help="contracts per trade")
+    p.add_argument("--max-trades", type=int, default=0, help="ek expiry din me max kitni entry (0 = koi limit nahi)")
     p.add_argument("--fee-per-side", type=float, default=0.005)
     p.add_argument("--extra-slippage", type=float, default=0.0, help="ask ke upar extra $ (default 0, kyunki ask pe hi buy)")
     p.add_argument("--interval", type=float, default=5, help="kitne second me data refresh")
@@ -591,7 +595,7 @@ def main():
     TG["token"], TG["chat"] = cfg.tg_token, cfg.tg_chat
     h, m = (int(x) for x in cfg.expiry_utc.split(":"))
     engine, market = Engine(cfg), Market(h, m)
-    log(f"Start: band ±{cfg.band}, ask {cfg.entry_min}–{cfg.entry_max}, target {cfg.target_x}x, "
+    log(f"Start: band ±{cfg.band}, ask {cfg.entry_min}–{cfg.entry_max}, max {cfg.max_trades or 'unlimited'} trades/din, target {cfg.target_x}x, "
         f"window last {cfg.max_mins_left:g} min, qty {cfg.qty:g}")
     if cfg.headless:
         if TG["token"] and TG["chat"]:
