@@ -162,3 +162,4 @@
 31-Oct 13:30:02  MISS P-XAUT-3860-311026: last 0.1 range me tha lekin ask 0.28 (backtest yahan buy kar leta)
 31-Oct 13:30:02  BUY  P-XAUT-3850-311026 @ 0.09 (ask size 28709)  spot 3877.34  480 min left
 31-Oct 13:30:02  BUY  P-XAUT-3840-311026 @ 0.09 (ask size 10008)  spot 3877.34  480 min left
+31-Oct 18:36:57  max runtime pura, band kar raha hoon.
