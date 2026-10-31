@@ -65,7 +65,7 @@ async function tick(){
   const un=document.getElementById('unr');un.textContent='$'+f(st.unreal,3);un.className=cls(st.unreal);
   document.getElementById('tw').textContent=st.trades+' / '+st.wins;
   document.getElementById('miss').textContent=st.missed;
-  const c=s.cfg;document.getElementById('rules').textContent=`Rules: strike spot se ±$${c.band} · best ask $${c.entry_min ?? 0}–$${c.entry_max} · target ${c.target_x}x (bid pe) · qty ${c.qty} · fee $${c.fee}/side · extra slip $${c.slip}. Highlighted rows = band ke andar.`;
+  const c=s.cfg;document.getElementById('rules').textContent=`Rules: strike spot se ±$${c.band} · best ask $${c.entry_min ?? 0}–$${c.entry_max} · din me max ${c.max_trades||'unlimited'} entry · target ${c.target_x}x (bid pe) · qty ${c.qty} · fee $${c.fee}/side · extra slip $${c.slip}. Highlighted rows = band ke andar.`;
   const ch=s.chain.map(r=>({...r,_cls:r.in_band?'band':''}));
   document.getElementById('chain').innerHTML=table(ch,[
    ['Symbol',r=>r.symbol],['Type',r=>r.kind==='C'?'CE':'PE'],['Strike',r=>f(r.strike,0)],['vs spot',r=>f(r.dist,1)],
